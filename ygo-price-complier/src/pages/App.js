@@ -2,10 +2,11 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import Stack from '@mui/material/Stack';
 import Header from './header.js';
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 function App() {
-  const { cardName } = useParams();
+  const { cardName, page } = useParams();
+  const [maxPage, setMaxPage] = useState(0);
   const [cardData, setCardData] = useState([]);
   const [searchText, setSearchText] = useState("");
   const [showSearchText, setShowSearchText] = useState(false);
@@ -29,6 +30,8 @@ function App() {
 
   useEffect(() => {
     console.log(cardData);
+    setMaxPage(Math.ceil(cardData.length/40));
+    console.log("Max Pages: ", maxPage)
   }, [cardData])
 
   useEffect(()=>{
@@ -88,8 +91,8 @@ function App() {
           justifyContent: "center",
         }}
       >
-        {cardData.slice(0, 40).map((item) => (
-          <Stack sx={{ cursor:'pointer', margin: "16px", width: "156px" }}>
+        {cardData.slice((page-1)*40, page*40).map((item) => (
+          <Stack sx={{ cursor:'pointer', margin: "16px", maxWidth: "156px" }}>
             <img
               src={item.card_images[0].image_url_small}
               alt="pic"

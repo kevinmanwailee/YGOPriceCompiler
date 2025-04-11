@@ -13,12 +13,12 @@ import { useNavigate } from "react-router-dom";
 export default function Header(props) {
   const [tempValue, setTempValue] = useState("");
   const navigate = useNavigate();
-  
+
   async function handleSubmit(event) {
     if (event.key === 'Enter'){
       console.log("Search Value: ", tempValue);
       
-      navigate("/search/"+tempValue);
+      navigate("/search/"+tempValue+"/page/1");
       event.preventDefault(); // Prevents form submission
     }
   }
