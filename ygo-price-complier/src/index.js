@@ -2,11 +2,21 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './pages/App';
+
+import Header from './pages/header';
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <App />
+  <Router>
+    <Routes>
+      <Route path="/" element={<App/>} />
+        <Route path="/search/:cardName" element={<App/>} />
+          {/* <Route index element={<App/>}/>
+          <Route path="/:cardName" element={<App/>}/> */}
+    </Routes>
+  </Router>
  
 );
 

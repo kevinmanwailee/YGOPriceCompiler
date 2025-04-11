@@ -8,9 +8,21 @@ import TextField from "@mui/material/TextField";
 import Stack from "@mui/material/Stack";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import {useState} from 'react';
+import { useNavigate } from "react-router-dom";
 
 export default function Header(props) {
   const [tempValue, setTempValue] = useState("");
+  const navigate = useNavigate();
+  
+  async function handleSubmit(event) {
+    if (event.key === 'Enter'){
+      console.log("Search Value: ", tempValue);
+      
+      navigate("/search/"+tempValue);
+      event.preventDefault(); // Prevents form submission
+    }
+  }
+
   return (
     <Stack style={{ width: "100%" }}>
       <Box sx={{ flexGrow: 1 }}>
@@ -28,7 +40,7 @@ export default function Header(props) {
                   size="small"
                   value={tempValue}
                   onChange={(e) => setTempValue(e.target.value)}
-                  onKeyDown={props.handleSubmit}	
+                  onKeyDown={handleSubmit}	
                   sx={{
                     backgroundColor: "white",
                     borderRadius: "5px",
