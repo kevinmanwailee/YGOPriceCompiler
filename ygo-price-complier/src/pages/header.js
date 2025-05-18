@@ -1,4 +1,5 @@
 import * as React from "react";
+import './header.css';
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -28,9 +29,9 @@ export default function Header(props) {
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>
-            <Stack sx={{ flexDirection: "row", width: "100%" }}>
+            <Stack contentEditable={false} sx={{ flexDirection: "row", width: "100%" }}>
               <div style={{ flex: 1 }}>
-                <Typography variant="h6">YGO-Converter</Typography>
+                <Typography contentEditable={false} variant="h6">YGO-Converter</Typography>
               </div>
               <div style={{ flex: 1 }}>
                 <TextField

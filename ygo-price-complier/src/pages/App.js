@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react';
+import './App.css'
 import axios from 'axios';
 import Stack from '@mui/material/Stack';
 import Header from './header.js';
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 
 function App() {
   const { cardName, page } = useParams();
@@ -12,6 +13,7 @@ function App() {
   const [showSearchText, setShowSearchText] = useState(false);
   const [isReady, setIsReady] = useState(false);
   const [hasError, setHasError] = useState(false);
+  const navigate = useNavigate();
 
   const URL = 'https://db.ygoprodeck.com/api/v7/cardinfo.php?tcgplayer_data&fname=';
   async function fetchData(){
@@ -69,6 +71,10 @@ function App() {
     )
   }
 
+  const handleClick = (myString) =>{
+    navigate(`/card/${encodeURIComponent(myString)}`);
+  };
+
   return (
     <div
       className="App"
@@ -92,13 +98,23 @@ function App() {
         }}
       >
         {cardData.slice((page-1)*40, page*40).map((item) => (
-          <Stack sx={{ cursor:'pointer', margin: "16px", maxWidth: "156px" }}>
+          <Stack 
+          onClick={() => handleClick(item.name)}
+          sx={{ 
+            cursor:'pointer',
+            padding: "16px",
+            maxWidth: "156px",
+            borderRadius: 1,
+            '&:hover': {
+              backgroundColor: 'lightgrey',
+              }
+            }}>
             <img
               src={item.card_images[0].image_url_small}
               alt="pic"
               style={{ width: "100%" }}
             />
-            <p style={{ fontSize: "10px" }}>{item.name}</p>
+            <p style={{ fontSize: "12px" }}>{item.name}</p>
           </Stack>
         ))}
       </Stack>

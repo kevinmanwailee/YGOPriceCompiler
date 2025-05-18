@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './pages/App';
-
+import CardPage from './pages/CardPage';
 import Header from './pages/header';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
@@ -15,6 +15,7 @@ root.render(
         <Route path="/search/:cardName" element={<App/>}>
           <Route path="page/:page" element={<Header/>}/>
         </Route>
+        <Route path="/card/:cardName" element={<CardPage/>}/>
     </Routes>
   </Router>
  
