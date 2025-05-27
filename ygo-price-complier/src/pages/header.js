@@ -31,7 +31,7 @@ export default function Header(props) {
           <Toolbar>
             <Stack contentEditable={false} sx={{ flexDirection: "row", width: "100%" }}>
               <div style={{ flex: 1 }}>
-                <Typography contentEditable={false} variant="h6">YGO-Converter</Typography>
+                <Typography className="no-caret" contentEditable={false} variant="h6">YGO-Converter</Typography>
               </div>
               <div style={{ flex: 1 }}>
                 <TextField
@@ -45,13 +45,14 @@ export default function Header(props) {
                   sx={{
                     backgroundColor: "white",
                     borderRadius: "5px",
+                    caretColor:"grey",
                   }}
                 />
               </div>
               <div
                 style={{ flex: 1, display: "flex", justifyContent: "flex-end" }}
               >
-                <IconButton color="inherit">
+                <IconButton className="no-caret" color="inherit">
                   <ShoppingCartIcon />
                 </IconButton>
               </div>

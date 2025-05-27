@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import "./App.css";
 import axios from 'axios';
 import Stack from '@mui/material/Stack';
 import Header from './header.js';
@@ -14,7 +15,7 @@ function CardPage(){
   }
   return(
     <div
-    className="CardPage"
+    className="no-caret"
     style={{
       display: "flex",
       width: "100%",
@@ -22,7 +23,7 @@ function CardPage(){
       alignItems: "center",
     }}>   
       <Header/>   
-      <p>Received: {lastSegment}</p>
+      <p style={{ color:"grey"}}>Received: {lastSegment}</p>
     </div>
   );
 }

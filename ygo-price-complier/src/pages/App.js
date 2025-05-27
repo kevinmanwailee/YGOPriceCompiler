@@ -1,12 +1,16 @@
 import React, {useState, useEffect} from 'react';
-import './App.css'
+import './App.css';
 import axios from 'axios';
 import Stack from '@mui/material/Stack';
+import { IconButton } from '@mui/material';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import Header from './header.js';
 import { useParams, useNavigate } from "react-router-dom";
 
 function App() {
   const { cardName, page } = useParams();
+
   const [maxPage, setMaxPage] = useState(0);
   const [cardData, setCardData] = useState([]);
   const [searchText, setSearchText] = useState("");
@@ -16,11 +20,44 @@ function App() {
   const navigate = useNavigate();
 
   const URL = 'https://db.ygoprodeck.com/api/v7/cardinfo.php?tcgplayer_data&fname=';
+
+  // prev and next page buttons
+  function PageNavigation({page, maxPage}){
+    const [ isPrevPageDisabled, setisPrevPageDisabled] = useState(false);
+    const [ isNextPageDisabled, setIsNextPageDisabled] = useState(false);
+
+    function handleClickPrevPage(){
+      var temp = parseInt(page)-1
+      navigate(`./page/${temp}`)
+    }
+    function handleClickNextPage(){
+      var temp = parseInt(page)+1
+      navigate(`./page/${temp}`)
+    }
+
+    useEffect(() => {
+      setisPrevPageDisabled(page==="1")
+      setIsNextPageDisabled(maxPage===parseInt(page))
+    },[page])
+  
+    return(
+      <Stack sx={{flexDirection:"row" }}>
+      <IconButton disabled={isPrevPageDisabled} onClick={() => handleClickPrevPage()}>
+        <ArrowBackIosNewIcon/>
+      </IconButton>
+      <IconButton disabled={isNextPageDisabled} onClick={() => handleClickNextPage()}>
+        <ArrowForwardIosIcon/>
+      </IconButton>
+    </Stack>
+    )
+  }
+
   async function fetchData(){
     setHasError(false);
     await axios.get(URL+searchText)
       .then((res) => {
         setCardData(res.data.data);
+        setMaxPage(Math.ceil(res.data.data.length/40));
       })
       .catch((error) => {
         console.log(error.response.data.error)
@@ -29,10 +66,8 @@ function App() {
 
     setIsReady(true);
   }
-
   useEffect(() => {
     console.log(cardData);
-    setMaxPage(Math.ceil(cardData.length/40));
     console.log("Max Pages: ", maxPage)
   }, [cardData])
 
@@ -71,13 +106,13 @@ function App() {
     )
   }
 
-  const handleClick = (myString) =>{
+  function handleClick(myString){
     navigate(`/card/${encodeURIComponent(myString)}`);
   };
 
   return (
     <div
-      className="App"
+      className="no-caret"
       style={{
         display: "flex",
         width: "100%",
@@ -87,6 +122,7 @@ function App() {
     >
       <Header/>
       {showSearchText ? <p style={{ paddingTop: 2, fontSize:"15px", color:"gray" }}>{cardData.length} search results for "{searchText}"</p> : ""}
+      <PageNavigation page={page} maxPage={maxPage}/>
       <Stack
         flex={1}
         sx={{
@@ -118,6 +154,7 @@ function App() {
           </Stack>
         ))}
       </Stack>
+      <PageNavigation page={page} maxPage={maxPage}/>
     </div>
   );
 }
