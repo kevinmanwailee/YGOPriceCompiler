@@ -121,7 +121,11 @@ function App() {
       }}
     >
       <Header/>
-      {showSearchText ? <p style={{ paddingTop: 2, fontSize:"15px", color:"gray" }}>{cardData.length} search results for "{searchText}"</p> : ""}
+      <Stack sx={{ alignItems:"center"}}>
+        <p style={{ marginBottom:"2px", fontSize:"15px", color:"gray" }}>Page {page} out of {maxPage}</p>
+        <p style={{ marginTop:"0px", fontSize:"15px", color:"gray" }}>{cardData.length} search results for "{searchText}"</p>
+      </Stack>
+
       <PageNavigation page={page} maxPage={maxPage}/>
       <Stack
         flex={1}
@@ -135,6 +139,7 @@ function App() {
       >
         {cardData.slice((page-1)*40, page*40).map((item) => (
           <Stack 
+          key={item.name}
           onClick={() => handleClick(item.name)}
           sx={{ 
             cursor:'pointer',

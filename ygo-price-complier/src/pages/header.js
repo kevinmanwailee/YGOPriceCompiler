@@ -24,14 +24,18 @@ export default function Header(props) {
     }
   }
 
+  function handleClickHome(){
+    navigate("/");
+  }
+
   return (
     <Stack style={{ width: "100%" }}>
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>
-            <Stack contentEditable={false} sx={{ flexDirection: "row", width: "100%" }}>
+            <Stack sx={{ flexDirection: "row", width: "100%" }}>
               <div style={{ flex: 1 }}>
-                <Typography className="no-caret" contentEditable={false} variant="h6">YGO-Converter</Typography>
+                <Typography onClick={()=> handleClickHome()}className="no-caret" variant="h6" style={{ cursor:"pointer", width:"150px" }}>YGO-Converter</Typography>
               </div>
               <div style={{ flex: 1 }}>
                 <TextField
