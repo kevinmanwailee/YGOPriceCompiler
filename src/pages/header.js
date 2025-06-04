@@ -29,7 +29,7 @@ export default function Header(props) {
   }
 
   return (
-    <Stack style={{ width: "100%" }}>
+    <Stack style={{ width: "100%", position:"fixed", zIndex:"9999"}}>
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static">
           <Toolbar>

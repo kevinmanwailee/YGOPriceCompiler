@@ -38,16 +38,16 @@ function CardPage() {
     "Quarter Century Secret Rare": ["QCSR", "#E86D6D"],
     "Prismatic Ultimate Rare": ["PUR", "#D87CE6"],
     "Ultimate Rare": ["UL", "#D87CE6"],
-    "Prismatic Collector's Rare": ["PCR","#D8B13E"],
-    "Collector's Rare": ["CR","#D8B13E"],
+    "Prismatic Collector's Rare": ["PCR", "#D8B13E"],
+    "Collector's Rare": ["CR", "#D8B13E"],
     "Prismatic Secret Rare": ["PSCR", "#E86D6D"],
     "Ghost Rare": ["GH", "#779AAD"],
     "Gold Rare": ["GR", "#ADAE29"],
     "Premium Gold Rare": ["PGR", "#ADAE29"],
-    "Common": ["C", "#9C9C9C"],
-    "Rare": ["R", "#9C9C9C"],
+    Common: ["C", "#9C9C9C"],
+    Rare: ["R", "#9C9C9C"],
     "Parallel Rare": ["PR", "#9C9C9C"],
-    "Promo": ["PROMO", "#9C9C9C"],
+    Promo: ["PROMO", "#9C9C9C"],
     "Ultra Pharaoh’s Rare": ["UPHR", "#CFA15E"],
     "Secret Pharaoh’s Rare": ["SCRPH", "#E86D6D"],
     "Duel Terminal Parallel Common": ["DTC", "#9C9C9C"],
@@ -57,14 +57,15 @@ function CardPage() {
     "Duel Terminal Secret Rare Parallel Rare": ["DTSCR", "#E86D6D"],
   };
 
+  const percentages = [70, 80, 85, 90, 100];
+
   async function fetchData() {
     await axios
       .get(URL)
       .then((res) => {
         setCardData(res.data.data[0]);
-        console.log(res.data.data[0].card_sets);
+        console.log("CardData: ", res.data.data[0]);
         setIsMonster(res.data.data[0].type.includes("Monster"));
-        setIsReady(true);
 
         var tempTotalSets = res.data.data[0].card_sets;
         var resultSets = [];
@@ -116,8 +117,7 @@ function CardPage() {
   }, []);
 
   useEffect(() => {
-    console.log("CURRSETARRAY");
-    console.log(currSetArray);
+    console.log("CURRSETARRAY", currSetArray);
   }, [currSetArray]);
 
   function handleButtonPercentage(value) {
@@ -125,7 +125,7 @@ function CardPage() {
   }
 
   function handleButtonSet(setJson) {
-    console.log(setJson);
+    console.log("setJson: ", setJson);
     setCurrSetArray(setJson);
     setCurrSet(setJson[0].set_name);
     setCurrPrice(setJson[0].set_price);
@@ -137,197 +137,235 @@ function CardPage() {
     setCurrPrice(selectedSet.set_price);
   }
 
-  if (!isReady) {
-    return <div>Loading...</div>;
+  function handleImageLoad() {
+    setIsReady(true);
   }
 
   return (
-    <div
-      className="no-caret"
-      style={{
-        display: "flex",
-        width: "100%",
-        flexDirection: "column",
-        alignItems: "center",
-      }}
-    >
-      <Header />
-      <Stack
-        direction="row"
-        spacing={{ xs: 1, sm: 2, md: 4 }}
-        sx={{
-          marginTop: "30px",
-          padding: "30px",
-          flexFlow: "wrap",
-          justifyContent:"center",
-        }}
-      >
-        <Stack sx={{ flex:1, maxWidth:"312px" , alignContent:"center"}}>
-          <img
-            src={cardData.card_images[0].image_url}
-            alt="img"
-            style={{ minWidth:"256px", width:"100%", height:"auto" }}
-          />
-        </Stack>
-        
-        <Stack sx={{ flex:1, paddingTop:"0px", marginLeft:"20px", marginRight:"20px", minWidth: "312px", maxWidth:"612px" }}>
-          <p className="title" style={{ margin: "0px", fontSize: "24px" }}>
-            {cardData.name}
-          </p>
-          <p
-            className="subtext"
-            style={{ marginTop: "10px", marginBottom: "10px" }}
-          >
-            {currSet} • {currRarity}
-          </p>
-
-          <p className="subtext" style={{ marginTop:"10px", marginBottom:"10px" }}>Set</p>
-          <Stack
-            direction="row"
-            sx={{
-              flexWrap: "wrap", // Ensures items wrap instead of overflowing
-              gap: 2,
-            }}
-          >
-            {totalSets.map((item) => (
-              <Button
-                onClick={() => handleButtonSet(item)}
-                variant={
-                  item[0].set_name === currSet ? "contained" : "outlined"
-                }
-                sx={{ width: "60px" }}
-              >
-                {item[0].set_code.split("-")[0]}
-              </Button>
-            ))}
-          </Stack>
-          <p
-            className="subtext"
-            style={{ marginTop: "20px", marginBottom: "10px" }}
-          >
-            Rarity
-          </p>
-          <Stack
-            direction="row"
-            sx={{
-              flexWrap: "wrap", // Ensures items wrap instead of overflowing
-              paddingBottom: "20px",
-              gap: 2,
-            }}
-          >
-            {currSetArray.map((item) => (
-              <Button
-                onClick={() => handleButtonSetRarity(item)}
-                variant={
-                  item.set_rarity === currRarity ? "contained" : "outlined"
-                }
-                sx={{ width: "80px", backgroundColor:rarityDict[item.set_rarity][1], color:"white" }}
-              >
-                {rarityDict[item.set_rarity][0]}
-              </Button>
-            ))}
-          </Stack>
-        </Stack>
-        <Stack
-          sx={{
-            flex: 1,
-            padding: "20px",
-            border: "1px solid lightgrey",
-            borderRadius: "5px",
-            height:"100%",
-            maxWidth:"256px",
+    <>
+      {!isReady && <p>Loading...</p>}
+      {cardData?.card_images?.[0]?.image_url && (
+        <img
+          key={cardData.name}
+          alt={`preload-${cardData.name}`}
+          onLoad={handleImageLoad}
+          src={cardData.card_images[0].image_url}
+          style={{ display: "none" }} // hide the preloading images
+        />
+      )}
+      {isReady && (
+        <div
+          className="no-caret"
+          style={{
+            display: "flex",
+            width: "100%",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
-          <p className="subtext" style={{ paddingBottom: "10px" }}>
-            {currRarity}
-          </p>
-          <p className="subtext" style={{ fontSize: "0.75rem" }}>
-            Tcgplayer (USD)
-          </p>
-          <p className="title">${currPrice}</p>
-          <p
-            className="subtext"
-            style={{ marginTop: "10px", fontSize: "0.75rem" }}
-          >
-            CAD {percentage * 100}%
-          </p>
-          <p className="title">
-            ${((currPrice / USDtoCAD) * percentage).toFixed(2)}
-          </p>
-          <Stack
-            direction="row"
-            sx={{
-              marginTop:"20px",
-              flexWrap: "wrap", // Ensures items wrap instead of overflowing
-              paddingTop: "20px",
-              gap: 2,
-            }}
-          >
-            <Button
-              sx={{ width: "10px" }}
-              variant="outlined"
-              onClick={() => handleButtonPercentage(75)}
-            >
-              75%
-            </Button>
-            <Button
-              sx={{ width: "10px" }}
-              variant="outlined"
-              onClick={() => handleButtonPercentage(80)}
-            >
-              80%
-            </Button>
-            <Button
-              sx={{ width: "10px" }}
-              variant="outlined"
-              onClick={() => handleButtonPercentage(85)}
-            >
-              85%
-            </Button>
-            <Button
-              sx={{ width: "10px" }}
-              variant="outlined"
-              onClick={() => handleButtonPercentage(90)}
-            >
-              90%
-            </Button>
-            <Button
-              sx={{ width: "10px" }}
-              variant="outlined"
-              onClick={() => handleButtonPercentage(100)}
-            >
-              100%
-            </Button>
-          </Stack>
-        </Stack>
-        
-      </Stack>
-          <Stack sx={{ padding:"20px", marginLeft:"40px", marginRight:"40px", border:"1px solid grey", borderRadius:"5px", maxWidth:"1200px" }}>
-            <p className="title">Description</p>
-            <p className="para">{cardData.desc}</p>
-
-            {isMonster && !cardData.linkval && <p className="title">Level/Rank</p>}
-            {isMonster && !cardData.linkval && (
-              <p className="para">{cardData.level}</p>
-            )}
-            {isMonster && cardData.linkval && <p className="title">Link</p>}
-            {isMonster && cardData.linkval && (
-              <p className="para">{cardData.linkval}</p>
-            )}
-
-            <p className="title">Card Type</p>
-            <p className="para">
-              {cardData.type} / {cardData.race}
+          <Header />
+          {/* Title Stack */}
+          <Stack className="page-title">
+            <p className="title" style={{ margin: "0px", fontSize: "24px" }}>
+              {cardData.name}
             </p>
-            {isMonster && (
-              <p className="para" style={{ marginTop: "5px" }}>
-                <strong>ATK/ </strong>
-                {cardData.atk} <strong>{!cardData.linkval ? "DEF/ " : ""}</strong>
-                {!cardData.linkval ? cardData.def : ""}
-              </p>
-            )}
+            <p
+              className="subtext"
+              style={{ marginTop: "10px", marginBottom: "10px" }}
+            >
+              {currSet} • {currRarity}
+            </p>
           </Stack>
-    </div>
+          <Stack className="container" direction="row">
+            {/* Picture Stack */}
+            <Stack
+              flex="0 0 100px"
+              sx={{
+                padding: "30px",
+                maxWidth: "312px",
+                alignContent: "center",
+              }}
+            >
+              <img
+                key={cardData.name}
+                src={cardData.card_images[0].image_url}
+                alt="img"
+                style={{
+                  minWidth: "256px",
+                  height: "auto",
+                }}
+              />
+            </Stack>
+
+            {/* Description / Price Stack */}
+            <Stack
+              className="description-price"
+              direction="row"
+              flexWrap="wrap-reverse"
+              justifyContent="center"
+              sx={{ paddingTop: "30px" }}
+            >
+              {/* Description/Set Options stack */}
+              <Stack sx={{ margin: "20px" }}>
+                {/* Description */}
+                <Stack
+                  sx={{
+                    paddingTop: "0px",
+                    width: "412px",
+                  }}
+                >
+                  <p
+                    className="subtext"
+                    style={{ marginTop: "10px", marginBottom: "10px" }}
+                  >
+                    Set
+                  </p>
+                  {/* Set Button Stack */}
+                  <Stack
+                    direction="row"
+                    sx={{
+                      flexWrap: "wrap", // Ensures items wrap instead of overflowing
+                      gap: 2,
+                    }}
+                  >
+                    {totalSets.map((item) => (
+                      <Button
+                        key={item[0].set_code}
+                        onClick={() => handleButtonSet(item)}
+                        variant={
+                          item[0].set_name === currSet
+                            ? "contained"
+                            : "outlined"
+                        }
+                        sx={{ width: "60px" }}
+                      >
+                        {item[0].set_code.split("-")[0]}
+                      </Button>
+                    ))}
+                  </Stack>
+                  <p
+                    className="subtext"
+                    style={{ marginTop: "20px", marginBottom: "10px" }}
+                  >
+                    Rarity
+                  </p>
+                  {/* Rarity Stack */}
+                  <Stack
+                    direction="row"
+                    sx={{
+                      flexWrap: "wrap", // Ensures items wrap instead of overflowing
+                      paddingBottom: "20px",
+                      gap: 2,
+                    }}
+                  >
+                    {currSetArray.map((item) => (
+                      <Button
+                        key={item.set_rarity +" " + item.set_edition}
+                        onClick={() => handleButtonSetRarity(item)}
+                        variant={
+                          item.set_rarity === currRarity
+                            ? "contained"
+                            : "outlined"
+                        }
+                        sx={{
+                          width: "80px",
+                          backgroundColor: rarityDict[item.set_rarity][1],
+                          color: "white",
+                        }}
+                      >
+                        {rarityDict[item.set_rarity][0]}
+                      </Button>
+                    ))}
+                  </Stack>
+
+                  {/* Description Stack */}
+                  <Stack sx={{ width: "100%" }}>
+                    <p className="title">Description</p>
+                    <p className="para">{cardData.desc}</p>
+
+                    {isMonster && !cardData.linkval && (
+                      <p className="title">Level/Rank</p>
+                    )}
+                    {isMonster && !cardData.linkval && (
+                      <p className="para">{cardData.level}</p>
+                    )}
+                    {isMonster && cardData.linkval && (
+                      <p className="title">Link</p>
+                    )}
+                    {isMonster && cardData.linkval && (
+                      <p className="para">{cardData.linkval}</p>
+                    )}
+
+                    <p className="title">Card Type</p>
+                    <p className="para">
+                      {cardData.type} / {cardData.race}
+                    </p>
+                    {isMonster && (
+                      <p className="para" style={{ marginTop: "5px" }}>
+                        <strong>ATK/ </strong>
+                        {cardData.atk}{" "}
+                        <strong>{!cardData.linkval ? "DEF/ " : ""}</strong>
+                        {!cardData.linkval ? cardData.def : ""}
+                      </p>
+                    )}
+                  </Stack>
+                </Stack>
+              </Stack>
+
+              {/* Price Stack */}
+              <Stack
+                sx={{
+                  alignSelf: "start",
+                  padding: "20px",
+                  border: "1px solid lightgrey",
+                  borderRadius: "5px",
+                  height: "fit-content",
+                  minWidth: "232px",
+                }}
+              >
+                <p className="subtext" style={{ paddingBottom: "10px" }}>
+                  {currRarity}
+                </p>
+                <p className="subtext" style={{ fontSize: "0.75rem" }}>
+                  Tcgplayer (USD)
+                </p>
+                <p className="title">${currPrice}</p>
+                <p
+                  className="subtext"
+                  style={{ marginTop: "10px", fontSize: "0.75rem" }}
+                >
+                  CAD {percentage * 100}%
+                </p>
+                <p className="title" key="Price">
+                  ${((currPrice / USDtoCAD) * percentage).toFixed(2)}
+                </p>
+                {/* Percentage button Stack */}
+                <Stack
+                  direction="row"
+                  sx={{
+                    gap: 1,
+                    flexWrap: "wrap", // Ensures items wrap instead of overflowing
+                    paddingTop: "20px",
+                  }}
+                >
+                  {percentages.map((item) => (
+                    <Button
+                      key={item}
+                      size="small"
+                      sx={{ minWidth: "unset", width: "40px" }}
+                      variant="outlined"
+                      onClick={() => handleButtonPercentage(item)}
+                    >
+                      {item}%
+                    </Button>
+                  ))}
+                </Stack>
+              </Stack>
+            </Stack>
+          </Stack>
+        </div>
+      )}
+    </>
   );
 }
 export default CardPage;
