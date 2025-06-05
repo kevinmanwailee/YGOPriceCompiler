@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from "react";
+import { useCart } from "../context/CartContext.js";
 import "./CardPage.css";
 import axios from "axios";
 import Stack from "@mui/material/Stack";
 import Header from "./header.js";
 import { useLocation } from "react-router-dom";
 import Button from "@mui/material/Button";
+import { TextField, InputAdornment, IconButton } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import RemoveIcon from "@mui/icons-material/Remove";
+
+//TODO: set_edition (see "Tyrant Dragon LOD")
 
 function CardPage() {
+  const { addToCart } = useCart();
+
   const [cardData, setCardData] = useState([]);
   const [isMonster, setIsMonster] = useState(false);
   const [isReady, setIsReady] = useState(false);
@@ -14,8 +22,13 @@ function CardPage() {
 
   const [currPrice, setCurrPrice] = useState(0.0);
   const [currSet, setCurrSet] = useState("");
+  const [selectedSet, setSelectedSet] = useState(0);
   const [currRarity, setCurrRarity] = useState("");
   const [currSetArray, setCurrSetArray] = useState([]);
+  const [quantity, setQuantity] = useState(1);
+
+  const handleIncrement = () => setQuantity((prev) => prev + 1);
+  const handleDecrement = () => setQuantity((prev) => Math.max(1, prev - 1));
 
   const [USDtoCAD, setUSDtoCAD] = useState(0.0);
   const [percentage, setPercentage] = useState(1);
@@ -54,6 +67,7 @@ function CardPage() {
     "Duel Terminal Rare Parallel Rare": ["DTR", "#9C9C9C"],
     "Duel Terminal Super Parallel Rare": ["DTSR", "#6AA1CF"],
     "Duel Terminal Ultra Rare Parallel Rare": ["DTUR", "#CFA15E"],
+    "Duel Terminal Technology Ultra Rare": ["DTTR", "#CFA15E"],
     "Duel Terminal Secret Rare Parallel Rare": ["DTSCR", "#E86D6D"],
   };
 
@@ -120,12 +134,15 @@ function CardPage() {
     console.log("CURRSETARRAY", currSetArray);
   }, [currSetArray]);
 
+  useEffect(() => {
+    console.log("Selected set: ", selectedSet);
+  }, [selectedSet]);
+
   function handleButtonPercentage(value) {
     setPercentage(value / 100);
   }
 
   function handleButtonSet(setJson) {
-    console.log("setJson: ", setJson);
     setCurrSetArray(setJson);
     setCurrSet(setJson[0].set_name);
     setCurrPrice(setJson[0].set_price);
@@ -133,6 +150,7 @@ function CardPage() {
   }
 
   function handleButtonSetRarity(selectedSet) {
+    setSelectedSet(selectedSet);
     setCurrRarity(selectedSet.set_rarity);
     setCurrPrice(selectedSet.set_price);
   }
@@ -140,6 +158,17 @@ function CardPage() {
   function handleImageLoad() {
     setIsReady(true);
   }
+
+  function handleQuantity(event) {
+    const value = parseInt(event.target.value, 10);
+    if (!isNaN(value)) {
+      setQuantity(value);
+    } else if (event.target.value === "") {
+      setQuantity("");
+    }
+  }
+
+
 
   return (
     <>
@@ -176,12 +205,11 @@ function CardPage() {
               {currSet} • {currRarity}
             </p>
           </Stack>
-          <Stack className="container" direction="row">
+          <Stack className="container" direction="row" gap={2}>
             {/* Picture Stack */}
             <Stack
-              flex="0 0 100px"
+              flex="0 1 auto"
               sx={{
-                padding: "30px",
                 maxWidth: "312px",
                 alignContent: "center",
               }}
@@ -191,7 +219,9 @@ function CardPage() {
                 src={cardData.card_images[0].image_url}
                 alt="img"
                 style={{
-                  minWidth: "256px",
+                  flexShrink: 1,
+                  maxWidth: "100%",
+                  minWidth: "200px",
                   height: "auto",
                 }}
               />
@@ -203,15 +233,16 @@ function CardPage() {
               direction="row"
               flexWrap="wrap-reverse"
               justifyContent="center"
-              sx={{ paddingTop: "30px" }}
+              flex="0 1 452px"
+              sx={{ minWidth: "400px" }}
             >
               {/* Description/Set Options stack */}
-              <Stack sx={{ margin: "20px" }}>
+              <Stack>
                 {/* Description */}
                 <Stack
                   sx={{
                     paddingTop: "0px",
-                    width: "412px",
+                    maxWidth: "412px",
                   }}
                 >
                   <p
@@ -230,7 +261,7 @@ function CardPage() {
                   >
                     {totalSets.map((item) => (
                       <Button
-                        key={item[0].set_code}
+                        key={item[0].set_name + " " + item[0].set_code}
                         onClick={() => handleButtonSet(item)}
                         variant={
                           item[0].set_name === currSet
@@ -260,7 +291,7 @@ function CardPage() {
                   >
                     {currSetArray.map((item) => (
                       <Button
-                        key={item.set_rarity +" " + item.set_edition}
+                        key={item.set_edition + " " + item.set_rarity}
                         onClick={() => handleButtonSetRarity(item)}
                         variant={
                           item.set_rarity === currRarity
@@ -359,6 +390,38 @@ function CardPage() {
                       {item}%
                     </Button>
                   ))}
+                </Stack>
+                <Stack direction="row" sx={{ paddingTop: "20px" }}>
+                  <TextField
+                    key="Quantity"
+                    value={quantity}
+                    onChange={handleQuantity}
+                    sx={{ maxWidth: 130 }}
+                    slotProps={{
+                      input: {
+                        min: 1,
+                        max: 100,
+                        step: 1,
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            <IconButton onClick={handleIncrement} size="small">
+                              <AddIcon />
+                            </IconButton>
+                            <IconButton onClick={handleDecrement} size="small">
+                              <RemoveIcon />
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      },
+                    }}
+                  />
+                  <Button
+                    variant="contained"
+                  onClick={() => addToCart([quantity, selectedSet])}
+                    sx={{ marginLeft: "8px" }}
+                  >
+                    Add to Cart
+                  </Button>
                 </Stack>
               </Stack>
             </Stack>

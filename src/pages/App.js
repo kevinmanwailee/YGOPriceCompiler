@@ -64,12 +64,15 @@ function App() {
 
   async function fetchData() {
     setHasError(false);
+    console.log(URL + searchText);
     await axios
       .get(URL + searchText)
       .then((res) => {
         setCardData(res.data.data);
         setMaxPage(Math.ceil(res.data.data.length / 40));
-        setTotalImageCount(res.data.data.slice((page - 1) * 40, page * 40).length);
+        setTotalImageCount(
+          res.data.data.slice((page - 1) * 40, page * 40).length
+        );
         setAllLoaded(false);
         setImageCount(0);
       })
@@ -99,7 +102,7 @@ function App() {
     setAllLoaded(false);
     setImageCount(0);
     setTotalImageCount(cardData.slice((page - 1) * 40, page * 40).length);
-  }, [page])
+  }, [page]);
 
   useEffect(() => {
     console.log("Images loaded: ", imageCount, " / ", totalImageCount);
