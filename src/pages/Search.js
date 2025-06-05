@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "./App.css";
+import "./Search.css";
 import axios from "axios";
 import Stack from "@mui/material/Stack";
 import { IconButton } from "@mui/material";
@@ -8,7 +8,7 @@ import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import Header from "./header.js";
 import { useParams, useNavigate } from "react-router-dom";
 
-function App() {
+function Search() {
   const { cardName, page } = useParams();
 
   const [maxPage, setMaxPage] = useState(0);
@@ -26,7 +26,7 @@ function App() {
     "https://db.ygoprodeck.com/api/v7/cardinfo.php?tcgplayer_data&fname=";
 
   // prev and next page buttons
-  function PageNavigation({ page, maxPage }) {
+  function PageNavigation({ page, maxPage, searchText }) {
     const [isPrevPageDisabled, setisPrevPageDisabled] = useState(false);
     const [isNextPageDisabled, setIsNextPageDisabled] = useState(false);
 
@@ -40,9 +40,10 @@ function App() {
     }
 
     useEffect(() => {
+      document.title = "Search: " + searchText + " | Page " + page + " | YGO-Converter";
       setisPrevPageDisabled(page === "1");
       setIsNextPageDisabled(maxPage === parseInt(page));
-    }, [page]);
+    }, [page,searchText]);
 
     return (
       <Stack sx={{ flexDirection: "row" }}>
@@ -85,7 +86,6 @@ function App() {
   // Debugging
   useEffect(() => {
     console.log(cardData);
-    console.log("total image count:", totalImageCount);
   }, [cardData]);
 
   useEffect(() => {
@@ -105,7 +105,6 @@ function App() {
   }, [page]);
 
   useEffect(() => {
-    console.log("Images loaded: ", imageCount, " / ", totalImageCount);
     if (totalImageCount !== 0) {
       if (imageCount >= totalImageCount) {
         setAllLoaded(true);
@@ -209,11 +208,11 @@ function App() {
               </Stack>
             ))}
           </Stack>
-          <PageNavigation page={page} maxPage={maxPage} />
+          <PageNavigation page={page} maxPage={maxPage} searchText={searchText}/>
         </div>
       )}
     </>
   );
 }
 
-export default App;
+export default Search;

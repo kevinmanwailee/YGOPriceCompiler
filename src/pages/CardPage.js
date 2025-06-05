@@ -103,6 +103,7 @@ function CardPage() {
           tempSetArray = [];
         });
 
+        document.title = res.data.data[0].name + " | YGO-Converter";
         setTotalSets(resultSets);
         setCurrSetArray(resultSets[0]);
         setCurrPrice(res.data.data[0].card_sets[0].set_price);
@@ -129,14 +130,6 @@ function CardPage() {
     fetchData();
     getConversion();
   }, []);
-
-  useEffect(() => {
-    console.log("CURRSETARRAY", currSetArray);
-  }, [currSetArray]);
-
-  useEffect(() => {
-    console.log("Selected set: ", selectedSet);
-  }, [selectedSet]);
 
   function handleButtonPercentage(value) {
     setPercentage(value / 100);

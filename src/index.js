@@ -2,9 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { CartProvider } from "./context/CartContext.js";
 import "./index.css";
-import App from "./pages/App";
-import CardPage from "./pages/CardPage";
-import Header from "./pages/header";
+import Search from "./pages/Search.js";
+import CardPage from "./pages/CardPage.js";
+import Home from "./pages/Home.js"
 import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
@@ -13,9 +13,9 @@ root.render(
   <CartProvider>
     <Router>
       <Routes>
-        <Route path="/" element={<Header />} />
-        <Route path="/search/:cardName" element={<App />}>
-          <Route path="page/:page" element={<Header />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/search/:cardName" element={<Search />}>
+          <Route path="page/:page" element={<Home />} />
         </Route>
         <Route path="/card/:cardName" element={<CardPage />} />
       </Routes>
