@@ -22,7 +22,7 @@ function CardPage() {
 
   const [currPrice, setCurrPrice] = useState(0.0);
   const [currSet, setCurrSet] = useState("");
-  const [selectedSet, setSelectedSet] = useState(0);
+  const [selectedSet, setSelectedSet] = useState([]);
   const [currRarity, setCurrRarity] = useState("");
   const [currSetArray, setCurrSetArray] = useState([]);
   const [quantity, setQuantity] = useState(1);
@@ -56,6 +56,7 @@ function CardPage() {
     "Prismatic Secret Rare": ["PSCR", "#E86D6D"],
     "Ghost Rare": ["GH", "#779AAD"],
     "Gold Rare": ["GR", "#ADAE29"],
+    "Gold Secret Rare": ["GSR", "#ADAE29"],
     "Premium Gold Rare": ["PGR", "#ADAE29"],
     Common: ["C", "#9C9C9C"],
     Rare: ["R", "#9C9C9C"],
@@ -106,6 +107,7 @@ function CardPage() {
         document.title = res.data.data[0].name + " | YGO-Converter";
         setTotalSets(resultSets);
         setCurrSetArray(resultSets[0]);
+        setSelectedSet(resultSets[0][0]);
         setCurrPrice(res.data.data[0].card_sets[0].set_price);
         setCurrSet(res.data.data[0].card_sets[0].set_name);
         setCurrRarity(res.data.data[0].card_sets[0].set_rarity);
@@ -222,15 +224,14 @@ function CardPage() {
 
             {/* Description / Price Stack */}
             <Stack
-              className="description-price"
               direction="row"
               flexWrap="wrap-reverse"
               justifyContent="center"
-              flex="0 1 452px"
+              // flex="0 1 452  px"
               sx={{ minWidth: "400px" }}
             >
               {/* Description/Set Options stack */}
-              <Stack>
+              <Stack sx={{ margin:"20px" }}>
                 {/* Description */}
                 <Stack
                   sx={{
@@ -410,7 +411,7 @@ function CardPage() {
                   />
                   <Button
                     variant="contained"
-                  onClick={() => addToCart([quantity, selectedSet])}
+                  onClick={() => addToCart([quantity, cardData.name, selectedSet])}
                     sx={{ marginLeft: "8px" }}
                   >
                     Add to Cart

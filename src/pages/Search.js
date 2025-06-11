@@ -125,8 +125,8 @@ function Search() {
         }}
       >
         <Header />
-        <Stack>
-          <p>{cardName} not found</p>
+        <Stack sx={{ paddingTop:"80px" }}>
+          <p>"{cardName}" not found</p>
         </Stack>
       </div>
     );

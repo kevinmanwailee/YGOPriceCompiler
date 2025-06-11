@@ -44,14 +44,7 @@ body {
   gap: 20px;
 }
 
-.description-price {
-  flex: 1 1;
-}
-
 @media (max-width: 1244px) {
-  .description-price {
-    flex: 0 0;
-  }
   .container {
     justify-content: center;
   }
