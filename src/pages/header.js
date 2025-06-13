@@ -1,25 +1,17 @@
 import * as React from "react";
-import { useCart } from "../context/CartContext.js";
 import "./header.css";
 import CartDropdown from "./CartDropdown.js";
 import { AppBar, Box, Toolbar, Typography, TextField, Stack} from "@mui/material";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Header() {
-  // TODO: add remove function (removeFromCart)
-  const { cart } = useCart();
-  const [cartQuantity, setCartQuantity] = useState(0);
   const [tempValue, setTempValue] = useState("");
   const navigate = useNavigate();
 
-  useEffect(() => {
-    setCartQuantity(cart.length)
-  },[cart])
 
   async function handleSubmit(event) {
     if (event.key === "Enter") {
-      console.log("Search Value: ", tempValue);
 
       navigate("/search/" + tempValue + "/page/1");
       event.preventDefault(); // Prevents form submission

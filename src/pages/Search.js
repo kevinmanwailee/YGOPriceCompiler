@@ -43,7 +43,7 @@ function Search() {
       document.title = "Search: " + searchText + " | Page " + page + " | YGO-Converter";
       setisPrevPageDisabled(page === "1");
       setIsNextPageDisabled(maxPage === parseInt(page));
-    }, [page,searchText]);
+    }, [page, searchText]);
 
     return (
       <Stack sx={{ flexDirection: "row" }}>
@@ -65,7 +65,6 @@ function Search() {
 
   async function fetchData() {
     setHasError(false);
-    console.log(URL + searchText);
     await axios
       .get(URL + searchText)
       .then((res) => {
@@ -83,10 +82,10 @@ function Search() {
       });
   }
 
-  // Debugging
-  useEffect(() => {
-    console.log(cardData);
-  }, [cardData]);
+  // // Debugging
+  // useEffect(() => {
+  //   console.log(cardData);
+  // }, [cardData]);
 
   useEffect(() => {
     if (searchText) {
@@ -108,7 +107,6 @@ function Search() {
     if (totalImageCount !== 0) {
       if (imageCount >= totalImageCount) {
         setAllLoaded(true);
-        console.log("All Loaded");
       }
     }
   }, [imageCount]);

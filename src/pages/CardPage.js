@@ -79,7 +79,6 @@ function CardPage() {
       .get(URL)
       .then((res) => {
         setCardData(res.data.data[0]);
-        console.log("CardData: ", res.data.data[0]);
         setIsMonster(res.data.data[0].type.includes("Monster"));
 
         var tempTotalSets = res.data.data[0].card_sets;
