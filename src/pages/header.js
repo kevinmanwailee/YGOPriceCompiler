@@ -9,7 +9,6 @@ export default function Header() {
   const [tempValue, setTempValue] = useState("");
   const navigate = useNavigate();
 
-
   async function handleSubmit(event) {
     if (event.key === "Enter") {
 

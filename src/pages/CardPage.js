@@ -410,7 +410,7 @@ function CardPage() {
                   />
                   <Button
                     variant="contained"
-                  onClick={() => addToCart([quantity, cardData.name, selectedSet])}
+                  onClick={() => addToCart([quantity, cardData.name, selectedSet, cardData.card_images[0].image_url])}
                     sx={{ marginLeft: "8px" }}
                   >
                     Add to Cart

@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useCart } from "../context/CartContext.js";
+import { useNavigate } from "react-router-dom";
+
 import {
   IconButton,
   Badge,
@@ -17,6 +19,7 @@ const CartDropdown = () => {
   const { cart, cartTotal } = useCart();
   const [anchorEl, setAnchorEl] = useState(null);
 
+  const navigate = useNavigate();
   const open = Boolean(anchorEl);
 
   const handleClick = (event) => {
@@ -25,6 +28,11 @@ const CartDropdown = () => {
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  function handleCheckout(){
+    setAnchorEl(null);
+    navigate("/checkout");
   };
 
   return (
@@ -51,7 +59,11 @@ const CartDropdown = () => {
         ) : (
           <List dense>
             {cart.map(([quantity, name, details], index) => (
-              <ListItem divider key={`${name}-${index}`} alignItems="flex-start">
+              <ListItem
+                divider
+                key={`${name}-${index}`}
+                alignItems="flex-start"
+              >
                 <Box
                   display="grid"
                   gridTemplateColumns="1fr 5fr 1fr"
@@ -64,20 +76,20 @@ const CartDropdown = () => {
                 </Box>
               </ListItem>
             ))}
-          <ListItem>
-            <Box
-              display="flex"
-              gridTemplateColumns="4fr 1fr"
-              gap={2}
-              width="100%"
+            <ListItem>
+              <Box
+                display="flex"
+                gridTemplateColumns="4fr 1fr"
+                gap={2}
+                width="100%"
               >
-                <ListItemText primary="Subtotal"/>
-                <ListItemText align="right" primary={"$"+cartTotal}/>
+                <ListItemText primary="Subtotal" />
+                <ListItemText align="right" primary={"$" + cartTotal} />
               </Box>
-          </ListItem>
+            </ListItem>
           </List>
         )}
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={handleCheckout}>
           <Typography variant="body2" color="primary">
             Go to Checkout
           </Typography>
