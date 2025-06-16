@@ -162,8 +162,6 @@ function CardPage() {
     }
   }
 
-
-
   return (
     <>
       {!isReady && <p>Loading...</p>}

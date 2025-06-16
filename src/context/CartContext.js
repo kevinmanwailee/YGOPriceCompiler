@@ -56,9 +56,8 @@ export const CartProvider = ({ children }) => {
     });
   }
 
-  // TODO
   function removeFromCart(name) {
-    setCart((prev) => prev.filter((item) => item[0][1] !== name));
+    setCart((prev) => prev.filter((item) => item[1] !== name));
   }
 
   return (
