@@ -13,7 +13,6 @@ import {
   Paper,
   Button,
   Avatar,
-  Divider,
   List,
   ListItem,
   IconButton,
@@ -56,7 +55,7 @@ function Checkout() {
       <Box
         sx={{
           p: 4,
-          display: "flex",
+          display: "flex",  
           flexDirection: "column",
           paddingTop: "80px",
           maxWidth: "1200px",

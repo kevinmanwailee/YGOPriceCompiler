@@ -70,6 +70,7 @@ function CardPage() {
     "Duel Terminal Ultra Rare Parallel Rare": ["DTUR", "#CFA15E"],
     "Duel Terminal Technology Ultra Rare": ["DTTR", "#CFA15E"],
     "Duel Terminal Secret Rare Parallel Rare": ["DTSCR", "#E86D6D"],
+    "Starlight Rare": ["SRL", "#E86D6D"],
   };
 
   const percentages = [70, 80, 85, 90, 100];
@@ -162,8 +163,16 @@ function CardPage() {
     }
   }
 
+  function handleTcgPlayer() {
+    window.open(
+      `https://www.tcgplayer.com/search/all/product?q=${cardData.name}`,
+      "_blank"
+    );
+  }
+
   return (
     <>
+    <Header />
       {!isReady && <p>Loading...</p>}
       {cardData?.card_images?.[0]?.image_url && (
         <img
@@ -184,7 +193,7 @@ function CardPage() {
             alignItems: "center",
           }}
         >
-          <Header />
+          
           {/* Title Stack */}
           <Stack className="page-title">
             <p className="title" style={{ margin: "0px", fontSize: "24px" }}>
@@ -194,7 +203,7 @@ function CardPage() {
               className="subtext"
               style={{ marginTop: "10px", marginBottom: "10px" }}
             >
-              {currSet} • {currRarity}
+              {currSet}
             </p>
           </Stack>
           <Stack className="container" direction="row" gap={2}>
@@ -203,6 +212,7 @@ function CardPage() {
               flex="0 1 auto"
               sx={{
                 maxWidth: "312px",
+                padding: "20px",
                 alignContent: "center",
               }}
             >
@@ -212,8 +222,6 @@ function CardPage() {
                 alt="img"
                 style={{
                   flexShrink: 1,
-                  maxWidth: "100%",
-                  minWidth: "200px",
                   height: "auto",
                 }}
               />
@@ -224,11 +232,10 @@ function CardPage() {
               direction="row"
               flexWrap="wrap-reverse"
               justifyContent="center"
-              // flex="0 1 452  px"
-              sx={{ minWidth: "400px" }}
+              // sx={{ minWidth: "320px" }}
             >
               {/* Description/Set Options stack */}
-              <Stack sx={{ margin:"20px" }}>
+              <Stack sx={{ margin: "20px" }}>
                 {/* Description */}
                 <Stack
                   sx={{
@@ -291,8 +298,15 @@ function CardPage() {
                         }
                         sx={{
                           width: "80px",
-                          backgroundColor: rarityDict[item.set_rarity][1],
-                          color: "white",
+                          backgroundColor:
+                            item.set_rarity === currRarity
+                              ? rarityDict[item.set_rarity][1]
+                              : "transparent",
+                          color:
+                            item.set_rarity === currRarity
+                              ? "white"
+                              : rarityDict[item.set_rarity][1],
+                              borderColor: rarityDict[item.set_rarity][1], 
                         }}
                       >
                         {rarityDict[item.set_rarity][0]}
@@ -342,7 +356,7 @@ function CardPage() {
                   border: "1px solid lightgrey",
                   borderRadius: "5px",
                   height: "fit-content",
-                  minWidth: "232px",
+                  minWidth: "268px",
                 }}
               >
                 <p className="subtext" style={{ paddingBottom: "10px" }}>
@@ -374,6 +388,7 @@ function CardPage() {
                     <Button
                       key={item}
                       size="small"
+                      className="percentage-btn"
                       sx={{ minWidth: "unset", width: "40px" }}
                       variant="outlined"
                       onClick={() => handleButtonPercentage(item)}
@@ -408,10 +423,22 @@ function CardPage() {
                   />
                   <Button
                     variant="contained"
-                  onClick={() => addToCart([quantity, cardData.name, selectedSet, cardData.card_images[0].image_url])}
+                    onClick={() =>
+                      addToCart([
+                        quantity,
+                        cardData.name,
+                        selectedSet,
+                        cardData.card_images[0].image_url,
+                      ])
+                    }
                     sx={{ marginLeft: "8px" }}
                   >
                     Add to Cart
+                  </Button>
+                </Stack>
+                <Stack sx={{ paddingTop: "10px" }}>
+                  <Button onClick={() => handleTcgPlayer()}>
+                    Open TCGPlayer
                   </Button>
                 </Stack>
               </Stack>

@@ -1,6 +1,30 @@
 .no-caret{
   caret-color: transparent;
 }
+
+.no-wrap {
+  white-space: nowrap !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 body {
   font-family: 'Roboto', sans-serif;
+}
+
+.header-title-long{
+  display: inline !important;
+}
+
+.header-title-short {
+  display: none;
+}
+
+@media (max-width: 740px) {
+  .header-title-long {
+    display: none !important;
+  }
+  .header-title-short {
+    display: inline !important;
+  }
 }

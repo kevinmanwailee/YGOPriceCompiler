@@ -1,6 +1,5 @@
 body {
-  font-family: 'Roboto', sans-serif;
-  min-width: 432px;
+  font-family: "Roboto", sans-serif;
 }
 
 .no-caret {
@@ -21,7 +20,6 @@ body {
   font-size: 1rem;
   line-height: 1.5;
 }
-
 
 .subtext {
   margin: 0px;
@@ -49,17 +47,50 @@ body {
     justify-content: center;
   }
   .page-title {
-    padding-left: 0px;
+    padding-left: 40px;
+    align-self: start;
   }
 }
 
-@media (max-width: 680px) {
+@media (max-width: 740px) {
+  html,
+  body {
+    width: 100vw !important;
+    overflow-x: hidden !important;
+  }
+  * {
+    box-sizing: border-box;
+    word-break: break-word;
+  }
   .container {
-    justify-content: center;
-    flex-wrap: wrap;
+    flex-direction: column !important;
+    gap: 8px !important;
+    padding: 8px !important;
+    width: 100% !important;
+    align-items: center !important; /* Center children horizontally */
   }
   .page-title {
-    padding-left: 20px;
-
+    padding-left: 0 !important;
+    padding-top: 72px !important;
+    width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important; /* Center title horizontally */
+    text-align: center !important;  /* Center text */
+  }
+  .container img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    min-width: 0 !important;
+    width: 100% !important;
+    max-width: 300px !important;
+    height: auto !important;
+  }
+  .percentage-btn,
+  .MuiButton-root {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }

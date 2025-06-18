@@ -36,22 +36,30 @@ export default function Header({ inputRef, justFocused }) {
       }}
     >
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
+        <AppBar position="fixed">
           <Toolbar>
             <Stack sx={{ flexDirection: "row", width: "100%" }}>
               <div style={{ flex: 1 }}>
                 <Typography
                   onClick={() => handleClickHome()}
-                  className="no-caret"
+                  className="no-caret header-title-long"
                   variant="h6"
-                  style={{ cursor: "pointer", width: "150px" }}
+                  style={{ cursor: "pointer" }}
                 >
                   YGO-Converter
+                </Typography>
+                <Typography
+                  onClick={() => handleClickHome()}
+                  className="no-caret header-title-short no-wrap"
+                  variant="h6"
+                  style={{ cursor: "pointer" }}
+                >
+                  YGOC
                 </Typography>
               </div>
               <div style={{ flex: 1 }}>
                 <TextField
-                  placeholder="Search"
+                  placeholder="Search... "
                   fullWidth
                   variant="outlined"
                   size="small"
