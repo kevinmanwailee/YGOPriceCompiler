@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/YGOPriceComplier/static/css/main.03092867.css",
-    "main.js": "/YGOPriceComplier/static/js/main.1eba9372.js",
-    "static/js/453.afd2aa0a.chunk.js": "/YGOPriceComplier/static/js/453.afd2aa0a.chunk.js",
-    "index.html": "/YGOPriceComplier/index.html",
-    "main.03092867.css.map": "/YGOPriceComplier/static/css/main.03092867.css.map",
-    "main.1eba9372.js.map": "/YGOPriceComplier/static/js/main.1eba9372.js.map",
-    "453.afd2aa0a.chunk.js.map": "/YGOPriceComplier/static/js/453.afd2aa0a.chunk.js.map"
+    "main.css": "/YGOPriceCompiler/static/css/main.0d894d90.css",
+    "main.js": "/YGOPriceCompiler/static/js/main.1eb21880.js",
+    "static/js/453.afd2aa0a.chunk.js": "/YGOPriceCompiler/static/js/453.afd2aa0a.chunk.js",
+    "index.html": "/YGOPriceCompiler/index.html",
+    "main.0d894d90.css.map": "/YGOPriceCompiler/static/css/main.0d894d90.css.map",
+    "main.1eb21880.js.map": "/YGOPriceCompiler/static/js/main.1eb21880.js.map",
+    "453.afd2aa0a.chunk.js.map": "/YGOPriceCompiler/static/js/453.afd2aa0a.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.03092867.css",
-    "static/js/main.1eba9372.js"
+    "static/css/main.0d894d90.css",
+    "static/js/main.1eb21880.js"
   ]
 }
