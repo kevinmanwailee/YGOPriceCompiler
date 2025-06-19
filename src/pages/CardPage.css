@@ -35,6 +35,15 @@ body {
   width: 472px;
 }
 
+.price-container{
+  align-self: start;
+  padding: 20px;
+  border: 1px solid lightgrey;
+  border-radius: 5px;
+  height: fit-content;
+  min-width: 268px;
+}
+
 .container {
   display: flex;
   padding: 20px;
@@ -45,6 +54,10 @@ body {
 @media (max-width: 1244px) {
   .container {
     justify-content: center;
+  }
+  .price-container{
+    margin-top: 20px;
+    min-width: 360px;
   }
   .page-title {
     padding-left: 40px;
@@ -68,6 +81,9 @@ body {
     padding: 8px !important;
     width: 100% !important;
     align-items: center !important; /* Center children horizontally */
+  }
+  .price-container{
+    margin-top: 0px;
   }
   .page-title {
     padding-left: 0 !important;

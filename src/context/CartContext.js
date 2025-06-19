@@ -1,55 +1,54 @@
 // CartContext.js
-import { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
 const CartContext = createContext();
 
-// Each item is stored as [quantity, name, details, imgURL]
+// Each item is stored as { quantity, name, imgURL, details }
 export const CartProvider = ({ children }) => {
   const [cart, setCart] = useState([]);
   const [cartTotal, setCartTotal] = useState(0);
 
-  //TO DO
   useEffect(() => {
     let tempTotal = 0;
-
-    cart.forEach(([qty, name, details, url]) => {
-      const price = Number(details.set_price);
-      tempTotal += qty * price;
+    cart.forEach((item) => {
+      const price = Number(item.details.set_price);
+      tempTotal += item.quantity * price;
     });
-
     setCartTotal(Number(tempTotal.toFixed(2)));
   }, [cart]);
 
   function updateQuantity(name, newQty) {
-    setCart(
-      (prevCart) =>
-        prevCart
-          .map(([qty, itemName, details, imgURL]) =>
-            itemName === name
-              ? [newQty, itemName, details, imgURL]
-              : [qty, itemName, details, imgURL]
-          )
-          .filter(([qty]) => qty > 0) // remove items with qty 0
+    setCart((prevCart) =>
+      prevCart
+        .map((item) =>
+          item.name === name
+            ? { ...item, quantity: newQty }
+            : item
+        )
+        .filter((item) => item.quantity > 0)
     );
   }
+
   function addToCart(newItem) {
     setCart((prevCart) => {
-      // var tempValue = (cartTotal + (newItem[0] * newItem[2].set_price));
-      // setCartTotal(Number(tempValue.toFixed(2)));
-
       const updatedCart = [...prevCart];
       const existingIndex = updatedCart.findIndex(
-        ([, name, contents]) =>
-          name === newItem[1] &&
-          JSON.stringify(contents) === JSON.stringify(newItem[2])
+        (item) =>
+          item.name === newItem.name &&
+          JSON.stringify(item.details) === JSON.stringify(newItem.details)
       );
 
       if (existingIndex !== -1) {
         // Item exists, update quantity
-        updatedCart[existingIndex][0] += newItem[0];
+        updatedCart[existingIndex].quantity += newItem.quantity;
       } else {
         // New item, add to cart
-        updatedCart.push(newItem);
+        updatedCart.push({
+          quantity: newItem.quantity,
+          name: newItem.name,
+          imgURL: newItem.imgURL,
+          details: newItem.details,
+        });
       }
 
       return updatedCart;
@@ -57,7 +56,7 @@ export const CartProvider = ({ children }) => {
   }
 
   function removeFromCart(name) {
-    setCart((prev) => prev.filter((item) => item[1] !== name));
+    setCart((prev) => prev.filter((item) => item.name !== name));
   }
 
   return (

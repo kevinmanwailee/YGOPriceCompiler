@@ -1,6 +1,6 @@
 {
-  "name": "ygo-price-complier",
-  "homepage": "https://kevinmanwailee.github.io/YGOPriceComplier",
+  "name": "ygo-price-compiler",
+  "homepage": "https://kevinmanwailee.github.io/YGOPriceCompiler",
   "version": "0.1.0",
   "private": true,
   "dependencies": {

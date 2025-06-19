@@ -3,6 +3,7 @@ import { useCart } from "../context/CartContext.js";
 import { useNavigate } from "react-router-dom";
 
 import {
+  Stack,
   IconButton,
   Badge,
   Menu,
@@ -30,10 +31,10 @@ const CartDropdown = () => {
     setAnchorEl(null);
   };
 
-  function handleCheckout(){
+  function handleCheckout() {
     setAnchorEl(null);
     navigate("/checkout");
-  };
+  }
 
   return (
     <>
@@ -51,14 +52,14 @@ const CartDropdown = () => {
         anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
         transformOrigin={{ vertical: "top", horizontal: "right" }}
         PaperProps={{
-          style: { width: "300px", maxHeight: "400px", paddingTop: "16px" },
+          style: { width: "350px", maxHeight: "400px", paddingTop: "16px" },
         }}
       >
         {cart.length === 0 ? (
           <MenuItem disabled>Your cart is empty</MenuItem>
         ) : (
           <List dense>
-            {cart.map(([quantity, name, details], index) => (
+            {cart.map(({quantity, name, imgURL, details}, index) => (
               <ListItem
                 divider
                 key={`${name}-${index}`}
@@ -67,12 +68,14 @@ const CartDropdown = () => {
                 <Box
                   display="grid"
                   gridTemplateColumns="1fr 5fr 1fr"
-                  gap={2}
+                  gap="2px"
                   width="100%"
                 >
                   <ListItemText secondary={quantity} />
-                  <ListItemText primary={name} />
-                  <ListItemText secondary={"$" + details.set_price} />
+                  <Stack gap={0}>
+                    <ListItemText primary={name} secondary={details.set_name} />
+                  </Stack>
+                  <ListItemText primary={"$" + Number(details.set_price).toFixed(2)}/>
                 </Box>
               </ListItem>
             ))}

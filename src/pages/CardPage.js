@@ -139,15 +139,16 @@ function CardPage() {
 
   function handleButtonSet(setJson) {
     setCurrSetArray(setJson);
+    setSelectedSet(setJson[0]);
     setCurrSet(setJson[0].set_name);
     setCurrPrice(setJson[0].set_price);
     setCurrRarity(setJson[0].set_rarity);
   }
 
-  function handleButtonSetRarity(selectedSet) {
-    setSelectedSet(selectedSet);
-    setCurrRarity(selectedSet.set_rarity);
-    setCurrPrice(selectedSet.set_price);
+  function handleButtonSetRarity(setJson) {
+    setSelectedSet(setJson);
+    setCurrRarity(setJson.set_rarity);
+    setCurrPrice(setJson.set_price);
   }
 
   function handleImageLoad() {
@@ -349,16 +350,7 @@ function CardPage() {
               </Stack>
 
               {/* Price Stack */}
-              <Stack
-                sx={{
-                  alignSelf: "start",
-                  padding: "20px",
-                  border: "1px solid lightgrey",
-                  borderRadius: "5px",
-                  height: "fit-content",
-                  minWidth: "268px",
-                }}
-              >
+              <Stack className="price-container">
                 <p className="subtext" style={{ paddingBottom: "10px" }}>
                   {currRarity}
                 </p>
@@ -424,12 +416,12 @@ function CardPage() {
                   <Button
                     variant="contained"
                     onClick={() =>
-                      addToCart([
-                        quantity,
-                        cardData.name,
-                        selectedSet,
-                        cardData.card_images[0].image_url,
-                      ])
+                      addToCart({
+                        quantity: quantity,
+                        name: cardData.name,
+                        imgURL: cardData.card_images[0].image_url,
+                        details:selectedSet,
+                    })
                     }
                     sx={{ marginLeft: "8px" }}
                   >

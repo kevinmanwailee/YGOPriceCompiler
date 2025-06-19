@@ -59,7 +59,7 @@ function Checkout() {
           flexDirection: "column",
           paddingTop: "80px",
           maxWidth: "1200px",
-          minWidth: "600px",
+          // minWidth: "600px",
           width: "80%",
           marginLeft: "auto",
           marginRight: "auto",
@@ -92,7 +92,7 @@ function Checkout() {
               </ListItem>
 
               {/* Cart items */}
-              {cart.map(([qty, name, details, imgURL]) => (
+              {cart.map(({quantity, name, imgURL, details}) => (
                 <ListItem
                   key={name}
                   sx={{ display: "flex", alignItems: "center", px: 2 }}
@@ -134,13 +134,13 @@ function Checkout() {
                   >
                     <IconButton
                       size="small"
-                      onClick={() => handleQuantity(name, qty - 1)}
-                      disabled={qty <= 1}
+                      onClick={() => handleQuantity(name, (quantity) - 1)}
+                      disabled={(quantity) <= 1}
                     >
                       –
                     </IconButton>
-                    <Typography>{qty}</Typography>
-                    <IconButton size="small" onClick={() => handleQuantity(name, qty + 1)}>
+                    <Typography>{(quantity)}</Typography>
+                    <IconButton size="small" onClick={() => handleQuantity(name, (quantity) + 1)}>
                       +
                     </IconButton>
                   </Box>
@@ -155,7 +155,7 @@ function Checkout() {
                       pr: 2,
                     }}
                   >
-                    ${(details.set_price * qty).toFixed(2)}
+                    ${(Number(details.set_price) * Number(quantity)).toFixed(2)}
                   </Typography>
 
                   {/* Remove */}
@@ -176,7 +176,7 @@ function Checkout() {
         )}
 
         {cartTotal === 0 && (
-          <Typography sx={{ alignSelf: "start" }} variant="h6" gutterBottom>
+          <Typography sx={{ alignSelf: "center" }} variant="h6" gutterBottom>
             Shopping cart is empty
           </Typography>
         )}
