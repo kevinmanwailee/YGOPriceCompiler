@@ -1,6 +1,7 @@
 // TODO: Change cart storage => unique id shouldn't be name
 //        user should be able to add the same card from different sets
 
+import axios from "axios";
 import { useState, useEffect, useRef } from "react";
 import { useCart } from "../context/CartContext.js";
 import { useNavigate } from "react-router-dom";
@@ -24,10 +25,32 @@ function Checkout() {
   const inputRef = useRef(null);
   const { cart, cartTotal, updateQuantity, removeFromCart } = useCart();
   const [justFocused, setJustFocused] = useState(false);
+  const [USDtoCAD, setUSDtoCAD] = useState(0);
+  const [total, setTotal] = useState(0);
+  const [selectedPercentage, setSelectedPercentage] = useState(1);
+  const conversionURL =
+    "https://cdn.jsdelivr.net/npm/@fawazahmed0/currency-api@latest/v1/currencies/cad.json";
+
+  async function getConversion() {
+    await axios
+      .get(conversionURL)
+      .then((res) => {
+        setUSDtoCAD(res.data.cad.tusd);
+        setTotal(cartTotal / res.data.cad.tusd);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
   useEffect(() => {
     document.title = "View Cart | YGO Converter";
+    getConversion();
   }, []);
+
+  useEffect(() => {
+    setTotal(cartTotal / USDtoCAD * selectedPercentage);
+  }, [selectedPercentage, cart])
 
   function handleQuantity(name, value) {
     if (value < 1) return; // prevent quantity less than 1
@@ -38,8 +61,8 @@ function Checkout() {
     removeFromCart(name);
   }
 
-  function handleClickItem(name){
-    navigate("/card/" + name)
+  function handleClickItem(name) {
+    navigate("/card/" + name);
   }
 
   function handleContinueShopping() {
@@ -49,13 +72,17 @@ function Checkout() {
     setTimeout(() => setJustFocused(false), 500);
   }
 
+  function onClickPercentage(percentage) {
+    setSelectedPercentage(percentage);
+  }
+
   return (
     <>
       <Header inputRef={inputRef} justFocused={justFocused} />
       <Box
         sx={{
           p: 4,
-          display: "flex",  
+          display: "flex",
           flexDirection: "column",
           paddingTop: "80px",
           maxWidth: "1200px",
@@ -68,6 +95,38 @@ function Checkout() {
         <Typography sx={{ alignSelf: "center" }} variant="h4" gutterBottom>
           Shopping Cart
         </Typography>
+
+        {/* Percentage buttons */}
+        <Stack
+          direction="row"
+          sx={{ gap: 1, flexWrap: "wrap", justifyContent: "center", mb: 2 }}
+        >
+          {[70, 80, 85, 90, 100].map((item) => (
+            <Button
+              key={item}
+              size="medium"
+              className="percentage-btn"
+              sx={{
+                minWidth: "unset",
+                width: "40px",
+                backgroundColor:
+                  selectedPercentage === item / 100
+                    ? "primary.main"
+                    : "transparent",
+                borderColor:
+                  selectedPercentage === item / 100
+                    ? "primary.main"
+                    : undefined,
+              }}
+              variant={
+                selectedPercentage === item / 100 ? "contained" : "outlined"
+              }
+              onClick={() => onClickPercentage(item / 100)}
+            >
+              {item}%
+            </Button>
+          ))}
+        </Stack>
 
         {cartTotal !== 0 && (
           <Paper sx={{ p: 2, maxWidth: "1200px", width: "100%" }}>
@@ -83,7 +142,9 @@ function Checkout() {
                 }}
                 divider
               >
-                <Box sx={{ flex: 3, ml: 4, display: "flex", alignItems: "center" }}>
+                <Box
+                  sx={{ flex: 3, ml: 4, display: "flex", alignItems: "center" }}
+                >
                   Product
                 </Box>
                 <Box sx={{ flex: 1, textAlign: "center" }}>Quantity</Box>
@@ -92,7 +153,7 @@ function Checkout() {
               </ListItem>
 
               {/* Cart items */}
-              {cart.map(({quantity, name, imgURL, details}) => (
+              {cart.map(({ quantity, name, imgURL, details }) => (
                 <ListItem
                   key={name}
                   sx={{ display: "flex", alignItems: "center", px: 2 }}
@@ -113,12 +174,21 @@ function Checkout() {
                       src={imgURL}
                       alt={name}
                       onClick={() => handleClickItem(name)}
-                      sx={{ cursor:"pointer", width: 100, height: 150, padding:2 }}
+                      sx={{
+                        cursor: "pointer",
+                        width: 100,
+                        height: 150,
+                        padding: 2,
+                      }}
                     />
-                    <Stack sx={{ marginLeft:2 }}>
+                    <Stack sx={{ marginLeft: 2 }}>
                       <Typography>{name}</Typography>
-                      <Typography color="text.secondary" fontSize="0.8rem">{details.set_name}</Typography>
-                      <Typography color="text.secondary" fontSize="0.8rem">{details.set_rarity}</Typography>
+                      <Typography color="text.secondary" fontSize="0.8rem">
+                        {details.set_name}
+                      </Typography>
+                      <Typography color="text.secondary" fontSize="0.8rem">
+                        {details.set_rarity}
+                      </Typography>
                     </Stack>
                   </Box>
 
@@ -134,13 +204,16 @@ function Checkout() {
                   >
                     <IconButton
                       size="small"
-                      onClick={() => handleQuantity(name, (quantity) - 1)}
-                      disabled={(quantity) <= 1}
+                      onClick={() => handleQuantity(name, quantity - 1)}
+                      disabled={quantity <= 1}
                     >
                       –
                     </IconButton>
-                    <Typography>{(quantity)}</Typography>
-                    <IconButton size="small" onClick={() => handleQuantity(name, (quantity) + 1)}>
+                    <Typography>{quantity}</Typography>
+                    <IconButton
+                      size="small"
+                      onClick={() => handleQuantity(name, quantity + 1)}
+                    >
                       +
                     </IconButton>
                   </Box>
@@ -160,17 +233,25 @@ function Checkout() {
 
                   {/* Remove */}
                   <Box sx={{ flex: 0.5, textAlign: "center" }}>
-                    <IconButton edge="end" aria-label="delete" onClick={() => handleDelete(name)}>
+                    <IconButton
+                      edge="end"
+                      aria-label="delete"
+                      onClick={() => handleDelete(name)}
+                    >
                       <DeleteIcon />
                     </IconButton>
                   </Box>
                 </ListItem>
               ))}
             </List>
-            
+
             <Grid container justifyContent="space-between">
               <Typography variant="h6">Subtotal:</Typography>
               <Typography variant="h6">${cartTotal.toFixed(2)}</Typography>
+            </Grid>
+            <Grid container justifyContent="space-between">
+              <Typography variant="h6">CAD:</Typography>
+              <Typography variant="h6">${total.toFixed(2)}</Typography>
             </Grid>
           </Paper>
         )}
@@ -182,14 +263,13 @@ function Checkout() {
         )}
 
         <Box sx={{ mt: 3, display: "flex", justifyContent: "space-between" }}>
-          <Button onClick={() => handleContinueShopping()} variant="outlined">
+          <Button
+            onClick={() => handleContinueShopping()}
+            variant="outlined"
+            sx={{ alignSelf: "center" }}
+          >
             Continue Shopping
           </Button>
-          {cartTotal !== 0 && (
-            <Button variant="contained" color="primary">
-              Checkout
-            </Button>
-          )}
         </Box>
       </Box>
     </>
