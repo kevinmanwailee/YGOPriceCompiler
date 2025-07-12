@@ -50,7 +50,7 @@ function Checkout() {
 
   useEffect(() => {
     setTotal((cartTotal / USDtoCAD) * selectedPercentage);
-  }, [selectedPercentage, cart]);
+  }, [selectedPercentage, cartTotal]);
 
   function handleQuantity(name, value) {
     if (value < 1) return; // prevent quantity less than 1
