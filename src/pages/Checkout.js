@@ -49,8 +49,8 @@ function Checkout() {
   }, []);
 
   useEffect(() => {
-    setTotal(cartTotal / USDtoCAD * selectedPercentage);
-  }, [selectedPercentage, cart])
+    setTotal((cartTotal / USDtoCAD) * selectedPercentage);
+  }, [selectedPercentage, cart]);
 
   function handleQuantity(name, value) {
     if (value < 1) return; // prevent quantity less than 1
@@ -92,44 +92,42 @@ function Checkout() {
           marginRight: "auto",
         }}
       >
-        <Typography sx={{ alignSelf: "center" }} variant="h4" gutterBottom>
-          Shopping Cart
-        </Typography>
-
-        {/* Percentage buttons */}
-        <Stack
-          direction="row"
-          sx={{ gap: 1, flexWrap: "wrap", justifyContent: "center", mb: 2 }}
-        >
-          {[70, 80, 85, 90, 100].map((item) => (
-            <Button
-              key={item}
-              size="medium"
-              className="percentage-btn"
-              sx={{
-                minWidth: "unset",
-                width: "40px",
-                backgroundColor:
-                  selectedPercentage === item / 100
-                    ? "primary.main"
-                    : "transparent",
-                borderColor:
-                  selectedPercentage === item / 100
-                    ? "primary.main"
-                    : undefined,
-              }}
-              variant={
-                selectedPercentage === item / 100 ? "contained" : "outlined"
-              }
-              onClick={() => onClickPercentage(item / 100)}
-            >
-              {item}%
-            </Button>
-          ))}
-        </Stack>
-
         {cartTotal !== 0 && (
           <Paper sx={{ p: 2, maxWidth: "1200px", width: "100%" }}>
+            <Typography sx={{ alignSelf: "center" }} variant="h4" gutterBottom>
+              Shopping Cart
+            </Typography>
+            <Stack
+              direction="row"
+              sx={{ gap: 1, flexWrap: "wrap", justifyContent: "center", mb: 2 }}
+            >
+              {[70, 80, 85, 90, 100].map((item) => (
+                <Button
+                  key={item}
+                  size="medium"
+                  className="percentage-btn"
+                  sx={{
+                    minWidth: "unset",
+                    width: "40px",
+                    backgroundColor:
+                      selectedPercentage === item / 100
+                        ? "primary.main"
+                        : "transparent",
+                    borderColor:
+                      selectedPercentage === item / 100
+                        ? "primary.main"
+                        : undefined,
+                  }}
+                  variant={
+                    selectedPercentage === item / 100 ? "contained" : "outlined"
+                  }
+                  onClick={() => onClickPercentage(item / 100)}
+                >
+                  {item}%
+                </Button>
+              ))}
+            </Stack>
+
             <List>
               {/* Header row */}
               <ListItem
