@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/YGOPriceCompiler/static/css/main.7d257c1e.css",
-    "main.js": "/YGOPriceCompiler/static/js/main.9e504396.js",
+    "main.js": "/YGOPriceCompiler/static/js/main.4e9f19d5.js",
     "static/js/453.358eb9cc.chunk.js": "/YGOPriceCompiler/static/js/453.358eb9cc.chunk.js",
     "index.html": "/YGOPriceCompiler/index.html",
     "main.7d257c1e.css.map": "/YGOPriceCompiler/static/css/main.7d257c1e.css.map",
-    "main.9e504396.js.map": "/YGOPriceCompiler/static/js/main.9e504396.js.map",
+    "main.4e9f19d5.js.map": "/YGOPriceCompiler/static/js/main.4e9f19d5.js.map",
     "453.358eb9cc.chunk.js.map": "/YGOPriceCompiler/static/js/453.358eb9cc.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.7d257c1e.css",
-    "static/js/main.9e504396.js"
+    "static/js/main.4e9f19d5.js"
   ]
 }
